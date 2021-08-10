@@ -21,11 +21,28 @@ const handleError = (errorResponse) => {
     console.error(errorResponse);
 }
 
-document.querySelector('#fetch').addEventListener('click', () => {
+document.querySelector('#fetch').addEventListener('click', (event) => {
+    event.preventDefault();
     document.querySelector('#output').innerHTML = "";
     document.querySelector('#output').style.color = "";
-    const url = `https://api.github.com/users/${document.querySelector('#username').value}`;
-    let getGithubPromise = fetchWithResolveReject(url)
+
+    // const url = `https://api.github.com/users/${document.querySelector('#username').value}`;
+    const url = 'https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1'
+    let getGithubPromise = fetchWithResolveReject(url,
+        // {referrerPolicy: "no-referrer"}
+        // {referrerPolicy: "origin-when-cross-origin"}
+        // {referrerPolicy: "unsafe-url"}
+        { 
+            mode: "cors",
+            referrerPolicy: "no-referrer",
+            credentials: "include"
+
+        }
+        // {
+        // referrerPolicy: "origin-when-cross-origin", // no-referrer, origin, same-origin...
+        // mode: "cors",
+        // }
+        )
     getGithubPromise.then((response) => {
         console.log(getGithubPromise);
         console.log(response)
@@ -34,3 +51,4 @@ document.querySelector('#fetch').addEventListener('click', () => {
         document.querySelector('#output').innerHTML = JSON.stringify(json);
     }).catch(handleError)
 })
+
